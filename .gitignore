@@ -1,0 +1,8 @@
+run.txt
+project_analysis.md
+implementation_plan.md
+fetal_vision_weights.pth
+data/processed
+data/raw/test_split.csv
+data/raw/train_split.csv
+data/raw/training_labels_formatted.csv
