@@ -1,8 +1,3 @@
-"""
-Custom exception definitions for the Fetal-Vision pipeline.
-These ensure graceful error handling across the preprocessing engine and FastAPI backend.
-"""
-
 class FetalVisionError(Exception):
     """Base exception for all Fetal-Vision pipeline errors."""
     pass

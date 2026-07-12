@@ -1,9 +1,3 @@
-"""
-Fetal-Vision Streamlit Frontend.
-Provides a visual interface to communicate with the FastAPI backend 
-and overlay the predicted clinical ellipse onto the ultrasound image.
-"""
-
 import streamlit as st
 import requests
 import cv2
@@ -11,7 +5,7 @@ import numpy as np
 from PIL import Image
 import io
 
-# Define the FastAPI endpoint
+# FastAPI endpoint
 API_URL = "http://127.0.0.1:8000/api/v1/predict_hc"
 
 st.set_page_config(page_title="Fetal-Vision AI", layout="wide")
@@ -28,7 +22,7 @@ with st.sidebar:
 def create_512_canvas(image_bytes, pixel_size, target_mm_per_pixel=0.1, target_shape=(512, 512)):
     """Replicates the backend's spatial normalization to map coordinates correctly."""
     nparr = np.frombuffer(image_bytes, np.uint8)
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # Read in color so we can draw a colored ellipse
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR) 
 
     scale_factor = pixel_size / target_mm_per_pixel
     new_width = int(img.shape[1] * scale_factor)
@@ -72,7 +66,6 @@ if predict_button and uploaded_file is not None:
                 canvas = create_512_canvas(file_bytes, pixel_size)
                 
                 # 4. Draw the predicted ellipse using OpenCV
-                # cv2.ellipse expects integers for centers and axes
                 center = (int(coords["cx"]), int(coords["cy"]))
                 axes = (int(coords["a"]), int(coords["b"]))
                 angle = coords["angle"]
@@ -92,9 +85,9 @@ if predict_button and uploaded_file is not None:
                     st.subheader("Inference Metrics")
                     st.json(result)
                     if result.get("source") == "binary_cache":
-                        st.success("⚡ Cache Hit: Bypassed GPU for zero-latency response.")
+                        st.success("Cache Hit: Bypassed GPU for zero-latency response.")
                     else:
-                        st.info("🧠 Full Model Inference: Calculated via PyTorch.")
+                        st.info("Full Model Inference: Calculated via PyTorch.")
             
         except requests.exceptions.RequestException as e:
             st.error(f"API Connection Error: Ensure your FastAPI server is running. Details: {e}")

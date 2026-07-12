@@ -10,9 +10,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.exceptions import CorruptedImageError, MetadataMissingError
 
 def preprocess_image(img, pixel_size, target_mm_per_pixel=0.1, target_shape=(512, 512)):
-    """
-    Scales, crops, pads, and normalizes a single ultrasound image matrix based on its physical pixel size.
-    """
+    # Scales, crops, pads, and normalizes a single ultrasound image matrix based on its physical pixel size.
+
     scale_factor = pixel_size / target_mm_per_pixel
     new_width = int(img.shape[1] * scale_factor)
     new_height = int(img.shape[0] * scale_factor)
@@ -70,9 +69,7 @@ def process_single_ultrasound(filename, pixel_size, raw_dir, processed_dir, targ
     return filename, True
 
 def build_data_engine(labels_csv_path, raw_dir, processed_dir, max_workers=8):
-    """
-    Executes the preprocessing pipeline concurrently using multithreading.
-    """
+    # Executes the preprocessing pipeline concurrently using multithreading.
     os.makedirs(processed_dir, exist_ok=True)
     
     # Assume labels dataset has standard HC18 challenge format

@@ -1,8 +1,3 @@
-"""
-PyTorch architecture for Fetal Head Circumference (HC) prediction.
-Modifies a standard ResNet18 for 1-channel ultrasound ingestion and 5-parameter regression.
-"""
-
 import torch
 import torch.nn as nn
 import torchvision.models as models

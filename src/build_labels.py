@@ -1,9 +1,3 @@
-"""
-Extracts target ellipse geometries (cx, cy, a, b, angle) from raw HC18 annotation masks.
-Applies the exact same resizing and cropping logic used in the data engine 
-to ensure ground-truth coordinates perfectly map to the 512x512 training tensors.
-"""
-
 import os
 import cv2
 import numpy as np
@@ -21,7 +15,6 @@ def generate_training_csv(raw_csv_path, raw_dir, output_csv_path, target_shape=(
         # Extract pixel size based on the specific HC18 challenge CSV header
         pixel_size = row['pixel size'] 
         
-        # HC18 challenge format appends "_Annotation" to the mask files
         annotation_filename = filename.replace('.png', '_Annotation.png')
         mask_path = os.path.join(raw_dir, annotation_filename)
         
@@ -58,7 +51,6 @@ def generate_training_csv(raw_csv_path, raw_dir, output_csv_path, target_shape=(
             continue
             
         # Isolate the largest drawn shape (the head circumference)
-        # We use length instead of contourArea because HC18 annotations are often 1-pixel thin outlines
         largest_contour = max(contours, key=len)
         
         # OpenCV requires at least 5 points to mathematically fit an ellipse

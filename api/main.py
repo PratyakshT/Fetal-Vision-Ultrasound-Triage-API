@@ -1,9 +1,3 @@
-"""
-Fetal-Vision FastAPI Backend.
-Integrates in-memory preprocessing, binary caching, and PyTorch inference 
-with resilient custom exception handling.
-"""
-
 import sys
 import os
 import cv2
@@ -42,7 +36,7 @@ else:
 model.to(device)
 model.eval()
 
-# 2. Resilient System Design: Global Exception Handlers
+# 2. Global Exception Handlers
 @app.exception_handler(FetalVisionError)
 async def custom_fetal_vision_handler(request: Request, exc: FetalVisionError):
     """Catches domain-specific pipeline errors and prevents server crashes."""
@@ -55,7 +49,7 @@ async def custom_fetal_vision_handler(request: Request, exc: FetalVisionError):
         },
     )
 
-# 3. The Core Inference Endpoint
+# 3. The Inference Endpoint
 @app.post("/api/v1/predict_hc")
 async def predict_head_circumference(
     file: UploadFile = File(...),

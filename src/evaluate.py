@@ -1,9 +1,3 @@
-"""
-Fetal-Vision Evaluation Suite.
-Calculates clinical-grade metrics (IoU, MAE, Circumference Error) on unseen ultrasound data
-to validate model generalization and performance.
-"""
-
 import os
 import sys
 import cv2
@@ -17,7 +11,6 @@ from src.model import FetalHCModel
 from src.preprocess import preprocess_image
 
 def calculate_iou(pred_params, true_params, shape=(512, 512)):
-    """Calculates Intersection over Union by drawing both ellipses on blank masks."""
     mask_pred = np.zeros(shape, dtype=np.uint8)
     mask_true = np.zeros(shape, dtype=np.uint8)
     
@@ -42,7 +35,6 @@ def calculate_iou(pred_params, true_params, shape=(512, 512)):
     return intersection / union if union > 0 else 0
 
 def calculate_circumference_mm(a, b, pixel_size):
-    """Calculates the physical perimeter of the ellipse in mm using Ramanujan's approximation."""
     # Convert pixel semi-axes back to physical millimeters
     a_mm = a * pixel_size
     b_mm = b * pixel_size
@@ -101,7 +93,6 @@ def evaluate_model(csv_path, raw_dir, weights_path):
             }
             
             # Calculate Scale-Aware Metrics
-            # We must map the 512x512 coordinates back to the original image space to get true mm
             true_circ = calculate_circumference_mm(true_dict['a'] / scale_factor, true_dict['b'] / scale_factor, pixel_size)
             pred_circ = calculate_circumference_mm(pred_dict['a'] / scale_factor, pred_dict['b'] / scale_factor, pixel_size)
             
@@ -114,7 +105,7 @@ def evaluate_model(csv_path, raw_dir, weights_path):
 
     # Print Final Report
     print("\n" + "="*40)
-    print("🏆 FETAL-VISION CLINICAL METRICS REPORT")
+    print("FETAL-VISION CLINICAL METRICS REPORT")
     print("="*40)
     print(f"Mean Intersection over Union (IoU): {np.mean(metrics['iou']):.4f}")
     print(f"Median Circumference Error:       {np.median(metrics['circ_err_mm']):.2f} mm")
@@ -129,9 +120,6 @@ def evaluate_model(csv_path, raw_dir, weights_path):
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
-    # Ideally, point this to a completely unseen test set folder and test CSV.
-    # If you haven't partitioned a test set yet, you can run it on the training data 
-    # to verify the evaluation math executes correctly.
     TEST_CSV = os.path.join(base_dir, "data", "raw", "test_split.csv") 
     TEST_DIR = os.path.join(base_dir, "data", "raw", "training_set")
     WEIGHTS = os.path.join(base_dir, "fetal_vision_weights.pth")
