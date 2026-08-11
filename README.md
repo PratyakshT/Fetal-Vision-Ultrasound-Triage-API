@@ -5,9 +5,6 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110.0-009688.svg)](https://fastapi.tiangolo.com)
 [![Google Cloud Run](https://img.shields.io/badge/Deployed-Google%20Cloud%20Run-4285F4.svg)](#)
 
-> **Live Deployment:**
-> **API Endpoint:**
-
 ## 🚀 Overview
 Fetal-Vision is a full-stack, cloud-native computer vision pipeline designed to automate the measurement of fetal head circumference (HC) from 2D ultrasound scans. Built on the HC18 challenge dataset, this system transitions an academic deep learning model into a production-ready microservice. 
 
